@@ -3,8 +3,6 @@ const { EmbedBuilder } = require("discord.js");
 
 const { Player } = require("discord-player");
 
-const fs = require("fs");
-
 module.exports = {
     data: new SlashCommandBuilder().setName("shuffle").setDescription("Shuffles all tracks currently in the queue.").setDMPermission(false),
     async execute(interaction) {
@@ -25,14 +23,6 @@ module.exports = {
         }
 
         queue.tracks.shuffle();
-
-        let rawdata = fs.readFileSync("src/data.json");
-        var data = JSON.parse(rawdata);
-
-        data["queues-shuffled"] += 1;
-
-        let newdata = JSON.stringify(data);
-        fs.writeFileSync("src/data.json", newdata);
 
         embed.setDescription(queue.tracks.length === 1 ? `Successfully shuffled **${queue.tracks.toArray().length} track**!` : `Successfully shuffled **${queue.tracks.toArray().length} tracks**!`);
         return await interaction.reply({ embeds: [embed] });

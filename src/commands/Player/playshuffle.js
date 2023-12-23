@@ -3,7 +3,6 @@ const { EmbedBuilder } = require("discord.js");
 
 const { Player } = require("discord-player");
 
-const fs = require("node:fs");
 const logger = require("../../utils/logger");
 
 module.exports = {
@@ -88,13 +87,6 @@ module.exports = {
             embed.setDescription("This media doesn't seem to be working right now, please try again later.");
             return await interaction.followUp({ embeds: [embed] });
         }
-
-        const data = fs.readFileSync("src/data.json");
-        const parsed = JSON.parse(data);
-
-        parsed["queues-shuffled"] += 1;
-
-        fs.writeFileSync("src/data.json", JSON.stringify(parsed));
 
         embed.setDescription(`**${res.tracks.length} tracks** from the ${res.playlist.type} **[${res.playlist.title}](${res.playlist.url})** have been loaded into the server queue.`);
 

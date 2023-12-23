@@ -37,11 +37,6 @@ process.on("exit", (code) => {
     logger.error("The process exited with code: " + code);
 });
 
-if (!fs.existsSync("src/data.json")) {
-    logger.warn("Unable to find data.json file. Creating a new one with default values.");
-    fs.writeFileSync("src/data.json", JSON.stringify({ "songs-played": 0, "queues-shuffled": 0, "songs-skipped": 0 }));
-}
-
 const client = new Client({ intents: [ GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.Guilds ] });
 const player = new Player(client, { autoRegisterExtractor: false, ytdlOptions: { requestOptions: { headers: { cookie: process.env.YOUTUBE_COOKIE ? process.env.YOUTUBE_COOKIE : null } } } });
 player.extractors.register(YouTubeExtractor);
